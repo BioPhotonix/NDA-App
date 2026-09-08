@@ -266,7 +266,9 @@ The short version:
 - Host: **Netlify** — chosen over Vercel because Vercel's free Hobby tier is
   non-commercial and this is client-facing company use; Netlify's free tier
   permits it.
-- Site: https://biophotonix-nda.netlify.app (deploys from this branch on push)
+- Site: **https://nda.biophotonix.co.uk** (custom domain; the original
+  `biophotonix-nda.netlify.app` address still works and redirects to it).
+  Deploys automatically from this branch on push.
 - Email: Resend, sending as `nda@biophotonix.co.uk`.
 - **DNS for biophotonix.co.uk is served by Wix**, not by IONOS where the domain
   is registered. Records added in the IONOS panel do nothing — IONOS shows them

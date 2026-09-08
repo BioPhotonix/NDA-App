@@ -82,6 +82,34 @@ runs both. Either of these works, and both have a free tier.
 3. Leave the build settings alone — `netlify.toml` sets the publish directory
    and the functions directory.
 
+### 2b. Point a custom domain at it (optional)
+
+A `*.netlify.app` address works, but reads like a test site to a counterparty.
+To serve the app from `nda.biophotonix.co.uk` instead:
+
+1. Netlify → **Domain management** → **Add a domain** → enter the subdomain.
+2. Netlify may first ask you to **prove you own the parent domain** — it gives a
+   `TXT` record named `subdomain-owner-verification` to add at the root of the
+   zone. This happens when another Netlify account already has the apex domain
+   on its books.
+3. Then add the **`CNAME`** Netlify shows you, pointing the subdomain at the
+   site's `*.netlify.app` name.
+4. Set the custom domain as **primary**, so the netlify.app address redirects to
+   it and older links keep working.
+
+**These are two separate records and both are needed.** Ownership verification
+passing does not route any traffic — if the address returns
+`ERR_NAME_NOT_RESOLVED`, the CNAME is the one that is missing. Netlify often
+only reveals the CNAME target *after* ownership clears, so it is easy to add the
+first and think you are finished.
+
+HTTPS is issued automatically once the CNAME resolves; certificate warnings in
+the first few minutes are normal.
+
+No application changes are needed for a domain move: `config.js` calls
+`/api/send-nda` as a relative path, and page and API stay on the same origin, so
+`NDA_ALLOWED_ORIGINS` stays unset.
+
 ### 3. Set the environment variables
 
 In Vercel: **Project Settings → Environment Variables**.
@@ -107,7 +135,11 @@ deploy time.
 
 Open the deployed site, fill it in with your own email address, and submit. You
 should get two emails: the notification with the PDF attached, and the signer's
-copy. If nothing arrives, see Troubleshooting below.
+copy. If nothing arrives, check spam — the first messages from a newly verified
+domain are sometimes filtered while it builds reputation — then see
+Troubleshooting below.
+
+*Live site: https://nda.biophotonix.co.uk*
 
 ---
 
