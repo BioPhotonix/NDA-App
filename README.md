@@ -14,13 +14,53 @@ re-attaching by hand.
 1. Sign up at [resend.com](https://resend.com) (the free tier covers 3,000
    emails a month — far more than this needs).
 2. Go to **Domains → Add Domain** and add `biophotonix.co.uk`.
-3. Resend shows you a few DNS records (SPF, DKIM, and usually a return-path
-   record). Add them wherever BioPhotonix's DNS is managed, then press verify.
+3. Resend shows you a handful of DNS records to add — a DKIM `TXT`, two
+   `CNAME`s, and an optional DMARC `TXT`. **Use the values Resend shows you**,
+   not any written down here: the DKIM key is unique to the account, and Resend
+   has changed the shape of this record set before (it previously used a TXT
+   SPF record plus an MX record for bounces).
 
    This step matters: the NDA email is sent *from* your domain, and without
    these records it will land in spam or be rejected outright.
+
+   Two things that reliably go wrong — see **DNS gotchas** below before you
+   start.
 4. Go to **API Keys → Create API Key** and copy the key (it starts with `re_`).
-   You only get to see it once.
+   Choose **Sending access**, not Full access. You only get to see the key once;
+   if it is lost or exposed, delete it and issue another.
+
+### DNS gotchas
+
+**1. Find out which control panel actually serves your DNS.** The registrar you
+bought the domain from is not necessarily the one answering for it. If the
+nameservers point elsewhere — a site builder like Wix or Squarespace, or a CDN
+like Cloudflare — then records added at the registrar are inert, and the
+registrar's DNS page will still happily show them to you as though they were
+live. IONOS, for one, displays a small grey note to this effect and is otherwise
+indistinguishable from a working setup.
+
+Check the domain's `NS` records first (dnschecker.org, or the registrar's
+nameserver settings). Resend's own domain page also names the provider it
+detects, and is worth believing.
+
+*As deployed for BioPhotonix:* the domain is registered with IONOS, the website
+runs on Wix, and **Wix serves the DNS** — so the Resend records live in Wix's
+DNS editor, not in IONOS.
+
+**2. Providers disagree about how to write the record name.** For a record whose
+real name is `resend._domainkey.biophotonix.co.uk`:
+
+| Provider style | What to enter |
+|---|---|
+| Appends the domain for you (IONOS, most registrars) | `resend._domainkey` |
+| Wants the full name (Wix) | `resend._domainkey.biophotonix.co.uk` |
+
+Get this backwards and you create `resend._domainkey.biophotonix.co.uk.biophotonix.co.uk`,
+which verification will never find and which gives no useful error. Look at how
+an existing record in the same table is written and match it.
+
+**3. Use the copy button for the DKIM value.** It runs to several hundred
+characters, and a hand-selected paste that clips the end fails silently.
 
 ### 2. Deploy
 
@@ -141,9 +181,22 @@ did not redeploy. The message names which ones.
 
 **"The email service rejected the message."**
 Usually the domain in `NDA_FROM_EMAIL` is not verified in Resend, or the API key
-is wrong. Check your host's function logs — the real reason from Resend is
-logged there (it is deliberately not shown in the browser, since it can reveal
-API key state).
+is wrong. The browser deliberately does not show why, since Resend's reply can
+reveal API key state — but the reason is recorded in two places:
+
+- **Resend → Logs** is the quickest. Open the failed `POST /emails` entry: it
+  shows the status, Resend's own explanation, and the exact request the function
+  sent (addresses, subject, reply-to), which is also a good way to confirm the
+  app is composing the message correctly.
+- Your host's function logs carry the same thing, logged as
+  `Resend rejected the message <status> <body>`.
+
+The status tells you which problem you have:
+
+| Status | Meaning |
+|---|---|
+| `401` | Bad or deleted API key — reissue it and update the host, then redeploy |
+| `403` | Domain not verified — a DNS problem, not a code or key problem |
 
 **Emails go to spam.** The DNS records from step 1 are missing or incomplete.
 Resend's Domains page shows which ones are not verified.

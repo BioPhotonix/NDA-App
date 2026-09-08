@@ -262,6 +262,17 @@ The short version:
 - Environment variables are read at deploy time — **redeploy after changing
   them**, or the function keeps the old values.
 
+**Live deployment (Sep 2026):**
+- Host: **Netlify** — chosen over Vercel because Vercel's free Hobby tier is
+  non-commercial and this is client-facing company use; Netlify's free tier
+  permits it.
+- Site: https://biophotonix-nda.netlify.app (deploys from this branch on push)
+- Email: Resend, sending as `nda@biophotonix.co.uk`.
+- **DNS for biophotonix.co.uk is served by Wix**, not by IONOS where the domain
+  is registered. Records added in the IONOS panel do nothing — IONOS shows them
+  regardless. The Resend verification records live in Wix's DNS editor. See
+  `README.md` → *DNS gotchas*; this cost an hour to spot the first time.
+
 Previous Perplexity deployment details (for history — static only, so it
 predates the email feature):
 - Live URL: https://biophotonix-nda.pplx.app
