@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BioPhotonix — Non-Disclosure Agreement</title>
+<meta name="description" content="Review and complete the BioPhotonix Non-Disclosure Agreement before discussing Revolux project details." />
+
+<!-- Fonts: Authoritative/legal tone — Playfair Display for headings, DM Sans for body -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root,
+[data-theme='light'] {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
+
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+  --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+  --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+  --space-16: 4rem; --space-20: 5rem;
+
+  --color-bg: #f7f6f2;
+  --color-surface: #f9f8f5;
+  --color-surface-2: #fbfbf9;
+  --color-surface-offset: #f3f0ec;
+  --color-surface-offset-2: #edeae5;
+  --color-divider: #dcd9d5;
+  --color-border: #d4d1ca;
+  --color-text: #28251d;
+  --color-text-muted: #7a7974;
+  --color-text-faint: #bab9b4;
+  --color-primary: #01696f;
+  --color-primary-hover: #0c4e54;
+  --color-primary-active: #0f3638;
+  --color-primary-highlight: #cedcd8;
+  --color-error: #a12c7b;
+  --color-error-highlight: #e0ced7;
+  --color-success: #437a22;
+  --color-success-highlight: #d4dfcc;
+
+  --radius-sm: 0.375rem; --radius-md: 0.5rem;
+  --radius-lg: 0.75rem; --radius-xl: 1rem; --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px oklch(0.2 0.01 80 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0.2 0.01 80 / 0.08);
+  --shadow-lg: 0 12px 32px oklch(0.2 0.01 80 / 0.12);
+
+  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme='dark'] {
+  --color-bg: #171614;
+  --color-surface: #1c1b19;
+  --color-surface-2: #201f1d;
+  --color-surface-offset: #1d1c1a;
+  --color-surface-offset-2: #22211f;
+  --color-divider: #262523;
+  --color-border: #393836;
+  --color-text: #cdccca;
+  --color-text-muted: #797876;
+  --color-text-faint: #5a5957;
+  --color-primary: #4f98a3;
+  --color-primary-hover: #227f8b;
+  --color-primary-active: #1a626b;
+  --color-primary-highlight: #313b3b;
+  --color-error: #d163a7;
+  --color-error-highlight: #4c3d46;
+  --color-success: #6daa45;
+  --color-success-highlight: #3a4435;
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+  --shadow-md: 0 4px 12px oklch(0 0 0 / 0.3);
+  --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #171614;
+    --color-surface: #1c1b19;
+    --color-surface-2: #201f1d;
+    --color-surface-offset: #1d1c1a;
+    --color-surface-offset-2: #22211f;
+    --color-divider: #262523;
+    --color-border: #393836;
+    --color-text: #cdccca;
+    --color-text-muted: #797876;
+    --color-text-faint: #5a5957;
+    --color-primary: #4f98a3;
+    --color-primary-hover: #227f8b;
+    --color-primary-active: #1a626b;
+    --color-primary-highlight: #313b3b;
+    --color-error: #d163a7;
+    --color-error-highlight: #4c3d46;
+    --color-success: #6daa45;
+    --color-success-highlight: #3a4435;
+    --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.2);
+    --shadow-md: 0 4px 12px oklch(0 0 0 / 0.3);
+    --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.4);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--space-16);
+}
+
+body {
+  min-height: 100dvh;
+  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+img, canvas, svg { display: block; max-width: 100%; height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.15; font-family: var(--font-display); }
+p, li { text-wrap: pretty; max-width: 72ch; }
+
+::selection { background: oklch(from var(--color-primary) l c h / 0.25); color: var(--color-text); }
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+button { cursor: pointer; background: none; border: none; }
+
+a, button, input, textarea, select {
+  transition: color var(--transition-interactive), background var(--transition-interactive),
+    border-color var(--transition-interactive), box-shadow var(--transition-interactive);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* === Layout === */
+.page { max-width: 820px; margin: 0 auto; padding: var(--space-8) var(--space-6) var(--space-20); }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: var(--space-6); margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.brand { display: flex; align-items: center; gap: var(--space-3); }
+.brand-logo { width: 36px; height: 36px; border-radius: 50%; }
+.brand-name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-base); letter-spacing: -0.01em; }
+
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: var(--radius-full);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); border: 1px solid var(--color-border);
+}
+.theme-toggle:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+
+/* === Intro === */
+.intro { margin-bottom: var(--space-12); }
+.intro h1 { font-size: var(--text-xl); font-weight: 600; margin-bottom: var(--space-3); }
+.intro p { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+/* === NDA Document === */
+.nda-document {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--space-8), 5vw, var(--space-12));
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-12);
+}
+
+.nda-document h2 {
+  font-size: var(--text-lg); font-weight: 600; margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+.nda-document h2:first-of-type { margin-top: 0; }
+
+.nda-document h3 {
+  font-family: var(--font-body); font-size: var(--text-base); font-weight: 600;
+  margin-top: var(--space-6); margin-bottom: var(--space-2);
+}
+
+.nda-document p { margin-bottom: var(--space-3); font-size: var(--text-sm); line-height: 1.7; }
+.nda-document .clause-ref { font-weight: 600; color: var(--color-text); }
+
+.nda-document ol { padding-left: var(--space-6); margin-bottom: var(--space-3); }
+.nda-document ol li { font-size: var(--text-sm); line-height: 1.7; margin-bottom: var(--space-1); }
+
+.nda-document .nda-title {
+  text-align: center; font-size: var(--text-lg); font-weight: 700;
+  margin-bottom: var(--space-1); letter-spacing: 0.02em;
+}
+.nda-document .nda-subtitle {
+  text-align: center; font-size: var(--text-sm); color: var(--color-text-muted);
+  margin-bottom: var(--space-8); font-family: var(--font-body); font-style: italic;
+}
+
+.nda-document .field-inline {
+  display: inline; border-bottom: 1px solid var(--color-border);
+  padding: 0 var(--space-1); font-weight: 500;
+}
+
+/* === Form Section === */
+.form-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--space-6), 4vw, var(--space-10));
+  box-shadow: var(--shadow-sm);
+}
+
+.form-section h2 {
+  font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-2);
+}
+.form-section .form-intro {
+  color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-8);
+}
+
+.form-grid { display: grid; gap: var(--space-5); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+@media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.form-group label {
+  font-size: var(--text-sm); font-weight: 500; color: var(--color-text);
+}
+.form-group label .required { color: var(--color-primary); }
+
+.form-group input,
+.form-group textarea {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  width: 100%;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px oklch(from var(--color-primary) l c h / 0.12);
+  outline: none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--color-text-faint); }
+
+.form-group .error-msg {
+  font-size: var(--text-xs); color: var(--color-error);
+  display: none;
+}
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: var(--color-error);
+}
+.form-group.has-error .error-msg { display: block; }
+
+.form-group .hint {
+  font-size: var(--text-xs); color: var(--color-text-muted);
+}
+
+/* === Signature Pad === */
+.signature-section { margin-top: var(--space-6); }
+.signature-section label {
+  font-size: var(--text-sm); font-weight: 500; color: var(--color-text);
+  margin-bottom: var(--space-2); display: block;
+}
+
+.signature-tabs {
+  display: flex; gap: var(--space-1); margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+.signature-tab {
+  padding: var(--space-2) var(--space-4); font-size: var(--text-sm);
+  color: var(--color-text-muted); border-bottom: 2px solid transparent;
+  margin-bottom: -1px; font-weight: 500;
+}
+.signature-tab.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+.signature-pad-container {
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-surface-2); padding: var(--space-3);
+  position: relative;
+}
+.signature-pad-container canvas {
+  width: 100%; height: 160px; cursor: crosshair; touch-action: none;
+  border-radius: var(--radius-sm);
+}
+.signature-pad-container .sig-placeholder {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  color: var(--color-text-faint); font-size: var(--text-sm); pointer-events: none;
+}
+
+.signature-typed-input {
+  width: 100%; padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); font-size: var(--text-lg);
+  font-family: var(--font-display); font-style: italic;
+  color: var(--color-text); text-align: center;
+}
+.signature-typed-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px oklch(from var(--color-primary) l c h / 0.12);
+  outline: none;
+}
+.signature-typed-input::placeholder { color: var(--color-text-faint); }
+
+.signature-actions {
+  display: flex; gap: var(--space-3); margin-top: var(--space-3); align-items: center;
+}
+.btn-clear-sig {
+  font-size: var(--text-xs); color: var(--color-text-muted);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.btn-clear-sig:hover { color: var(--color-text); }
+
+/* === Recipient Type Toggle === */
+.recipient-type-toggle {
+  display: flex; gap: var(--space-2); margin-bottom: var(--space-6);
+  background: var(--color-surface-offset); border-radius: var(--radius-md);
+  padding: var(--space-1);
+}
+.toggle-option {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
+  cursor: pointer; font-size: var(--text-sm); font-weight: 500;
+  color: var(--color-text-muted);
+  transition: all var(--transition-interactive);
+}
+.toggle-option:has(input:checked) {
+  background: var(--color-surface); color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+.toggle-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.recipient-type-toggle--four {
+  flex-wrap: wrap;
+}
+.recipient-type-toggle--four .toggle-option {
+  flex: 1 1 45%;
+  min-width: 8.5rem;
+  text-align: center;
+}
+@media (min-width: 560px) {
+  .recipient-type-toggle--four .toggle-option { flex: 1 1 0; }
+}
+
+.jurisdiction-block {
+  margin-bottom: 1.75rem;
+  padding: 1rem 1.125rem 1.125rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-alt, rgba(0,0,0,0.015));
+}
+.jurisdiction-heading {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.625rem;
+}
+.jurisdiction-block .recipient-type-toggle { margin-bottom: 0.625rem; }
+.jurisdiction-hint {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* === Actions === */
+.actions {
+  display: flex; flex-direction: column; gap: var(--space-4);
+  margin-top: var(--space-8); align-items: stretch;
+}
+
+.btn-primary {
+  background: var(--color-primary); color: var(--color-surface);
+  border-radius: var(--radius-md); padding: var(--space-4) var(--space-6);
+  font-size: var(--text-sm); font-weight: 600; width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn-primary:active { background: var(--color-primary-active); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-secondary {
+  background: transparent; color: var(--color-text);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-5); font-size: var(--text-sm); font-weight: 500;
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+}
+.btn-secondary:hover { border-color: var(--color-text-muted); background: var(--color-surface-offset); }
+
+/* === Privacy Note === */
+.privacy-note {
+  display: flex; gap: var(--space-3); padding: var(--space-4);
+  background: var(--color-surface-offset); border-radius: var(--radius-md);
+  margin-top: var(--space-6); font-size: var(--text-xs); color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.privacy-note svg { flex-shrink: 0; margin-top: 2px; color: var(--color-text-muted); }
+/* Admin signature panel */
+.admin-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+.admin-toggle {
+  background: transparent;
+  border: 1px solid var(--color-divider);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  opacity: 0.6;
+}
+.admin-toggle:hover { opacity: 1; }
+.admin-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+.admin-modal.show { display: flex; }
+.admin-modal-content {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  max-width: 500px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.admin-modal-content h3 { margin: 0 0 var(--space-2); font-family: var(--font-display); }
+.admin-modal-content p { color: var(--color-text-muted); font-size: var(--text-sm); margin: 0 0 var(--space-4); }
+#admin-signature-canvas {
+  width: 100%;
+  height: 150px;
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  background: white;
+  cursor: crosshair;
+  touch-action: none;
+}
+.admin-modal-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+.admin-signature-preview {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  display: none;
+}
+.admin-signature-preview.show { display: block; }
+.admin-signature-preview img { max-height: 60px; margin-top: var(--space-2); }
+
+/* === Success Banner === */
+.success-banner {
+  display: none; padding: var(--space-4) var(--space-5);
+  background: var(--color-success-highlight); border-radius: var(--radius-md);
+  margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text);
+  border: 1px solid oklch(from var(--color-success) l c h / 0.3);
+}
+.success-banner.show { display: flex; align-items: center; gap: var(--space-3); }
+.success-banner svg { color: var(--color-success); flex-shrink: 0; }
+
+/* === Footer === */
+.footer {
+  text-align: center; padding-block: var(--space-8);
+  font-size: var(--text-xs); color: var(--color-text-faint);
+  border-top: 1px solid var(--color-divider);
+}
+.footer a { color: var(--color-text-muted); text-decoration: underline; text-underline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="header">
+    <div class="brand">
+      <img class="brand-logo" src="biophotonix-logo.jpg" alt="BioPhotonix logo" />
+      <span class="brand-name">BioPhotonix</span>
+    </div>
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <div class="intro">
+    <h1>Non-Disclosure Agreement</h1>
+    <p>Please review the agreement below, complete your details, and download the signed NDA. Return the completed document to Adail Islam at BioPhotonix before we discuss any Revolux project details.</p>
+  </div>
+
+  <!-- NDA Document -->
+  <article class="nda-document" id="nda-text">
+    <div class="nda-title">NON-DISCLOSURE AGREEMENT</div>
+    <div class="nda-subtitle">(Universal — <span id="preview-law-subtitle">Scots Law</span>)</div>
+
+    <p>This Non-Disclosure Agreement (this "Agreement") is made on the date set out below.</p>
+
+    <h2>PARTIES</h2>
+    <p>(1) <strong>BIOPHOTONIX LTD</strong>, a company incorporated in Scotland (company number SC881225) and having its registered office at Thebeyond, Skypark, 8 Elliot Street, Glasgow, G3 8EP ("BioPhotonix"); and</p>
+    <p id="recipient-clause-company">(2) <span class="field-inline" id="preview-company">[Company Name]</span>, <span id="preview-entity-noun">a company</span> <span id="preview-entity-verb">incorporated in</span> <span class="field-inline" id="preview-incorporation">[Jurisdiction]</span> (<span id="preview-entity-number-label">company number</span> <span class="field-inline" id="preview-company-number">[Company Number]</span>) and having its registered office at <span class="field-inline" id="preview-address">[Address]</span> (the "Recipient").</p>
+    <p id="recipient-clause-individual" style="display:none;">(2) <span class="field-inline" id="preview-individual-name">[Full Name]</span>, an individual residing at <span class="field-inline" id="preview-individual-address">[Address]</span> (the "Recipient").</p>
+    <p>(BioPhotonix and the Recipient are each a "Party" and together the "Parties").</p>
+
+    <h2>BACKGROUND</h2>
+    <p>A. BioPhotonix is engaged in the development of regulated photobiomodulation devices, software, treatment methodologies, and related know-how.</p>
+    <p>B. In connection with discussions and evaluations concerning a potential commercial, technical, regulatory, academic, or advisory relationship (the "Purpose"), it is necessary for Confidential Information (as defined below) to be disclosed.</p>
+    <p>C. The Parties wish to protect such Confidential Information on the terms set out in this Agreement.</p>
+
+    <h2>AGREED TERMS</h2>
+
+    <h3>1. Definitions</h3>
+    <p><span class="clause-ref">1.1</span> "Confidential Information" means any information (whether written, oral, visual, electronic, or in any other form) disclosed by or on behalf of a Party (the "Disclosing Party") to the other Party (the "Receiving Party") in connection with the Purpose which is, or ought reasonably to be regarded as, confidential.</p>
+    <p>Confidential Information includes, without limitation:</p>
+    <ol type="a">
+      <li>product specifications, prototypes, devices, designs, drawings, samples, software, firmware, algorithms, data, test results, clinical or technical reports, treatment protocols, methodologies, trade secrets, and know-how;</li>
+      <li>business plans, financial information, pricing, market analysis, regulatory strategy, intellectual property strategy, and commercial arrangements;</li>
+      <li>the existence and contents of this Agreement and the fact that discussions are taking place between the Parties; and</li>
+      <li>any copies, notes, analyses, summaries, or other derivatives of the above.</li>
+    </ol>
+
+    <h3>2. Confidentiality Obligations</h3>
+    <p><span class="clause-ref">2.1</span> The Receiving Party shall:</p>
+    <ol type="a">
+      <li>keep the Confidential Information strictly confidential and not disclose it to any third party without the prior written consent of the Disclosing Party;</li>
+      <li>use the Confidential Information solely for the Purpose and for no other purpose;</li>
+      <li>restrict access to the Confidential Information to those of its directors, officers, employees, professional advisers, or contractors who have a strict need to know for the Purpose ("Permitted Recipients"), and ensure that such persons are bound by confidentiality obligations no less protective than those in this Agreement; and</li>
+      <li>apply to the Confidential Information at least the same standard of care as it applies to its own confidential information of a similar nature, and in any event no less than a reasonable standard of care.</li>
+    </ol>
+
+    <h3>3. Exceptions</h3>
+    <p><span class="clause-ref">3.1</span> The obligations in Clause 2 shall not apply to information which the Receiving Party can demonstrate:</p>
+    <ol type="a">
+      <li>is or becomes publicly available other than as a result of a breach of this Agreement;</li>
+      <li>was lawfully in its possession prior to disclosure by the Disclosing Party;</li>
+      <li>is lawfully received from a third party without restriction on disclosure; or</li>
+      <li>is independently developed without reference to the Confidential Information.</li>
+    </ol>
+    <p><span class="clause-ref">3.2</span> Disclosure of Confidential Information may be made where required by law, court order, or regulatory authority, provided that (to the extent legally permitted) the Receiving Party gives prompt written notice to the Disclosing Party.</p>
+
+    <h3>4. Copies and Return of Materials</h3>
+    <p><span class="clause-ref">4.1</span> The Receiving Party may make copies of the Confidential Information only as strictly necessary for the Purpose.</p>
+    <p><span class="clause-ref">4.2</span> Upon written request by the Disclosing Party, the Receiving Party shall promptly:</p>
+    <ol type="a">
+      <li>return all Confidential Information in tangible form;</li>
+      <li>permanently erase or destroy all electronic copies; and</li>
+      <li>certify in writing its compliance with this Clause.</li>
+    </ol>
+
+    <h3>5. No Licence or Warranty</h3>
+    <p><span class="clause-ref">5.1</span> Nothing in this Agreement grants the Receiving Party any licence, right, or interest in the Disclosing Party's intellectual property.</p>
+    <p><span class="clause-ref">5.2</span> All Confidential Information is provided "as is" without warranty as to accuracy or completeness.</p>
+
+    <h3>6. Trade Secrets</h3>
+    <p>Notwithstanding any other provision of this Agreement, Confidential Information which constitutes a trade secret shall remain protected for so long as it retains its status as a trade secret under <span id="preview-law-tradesecret">Scots law</span>.</p>
+
+    <h3>7. No Reverse Engineering</h3>
+    <p>The Receiving Party shall not, and shall ensure that its Permitted Recipients do not, directly or indirectly reverse engineer, decompile, disassemble, or otherwise attempt to derive the composition, structure, design, firmware behaviour, software logic, or underlying ideas of any Confidential Information, prototype, device, or material disclosed under this Agreement.</p>
+
+    <h3>8. No Clinical or Patient Use</h3>
+    <p>The Receiving Party acknowledges that all devices, protocols, and materials disclosed are provided solely for evaluation and discussion purposes. The Receiving Party shall not use, test, trial, deploy, or apply any Confidential Information in or on human subjects, patients, or clinical settings, nor submit the same for ethical approval, clinical investigation, or experimental use, without the prior written consent of the Disclosing Party.</p>
+
+    <h3>9. Regulatory Restrictions</h3>
+    <p>The Receiving Party shall not submit or disclose Confidential Information to any regulatory authority, notified body, conformity assessment body, ethics committee or standards organisation without the prior written consent of the Disclosing Party, except where such disclosure is expressly within the agreed scope of services between the Parties or otherwise required by law.</p>
+
+    <h3>10. Non-Circumvention</h3>
+    <p>Neither Party shall knowingly use Confidential Information disclosed by the other Party for the principal purpose of circumventing the Disclosing Party in relation to a specific commercial opportunity introduced by the Disclosing Party in connection with the Purpose. This restriction shall not apply to any person or organisation with whom the Receiving Party had a pre-existing relationship, of whom it was independently aware, or with whom it subsequently establishes contact independently of the Confidential Information.</p>
+
+    <h3>11. No Publicity</h3>
+    <p>The Receiving Party shall not make any public announcement or disclosure regarding this Agreement, the Confidential Information, or the discussions between the Parties without the prior written consent of the Disclosing Party.</p>
+
+    <h3>12. Term and Survival</h3>
+    <p><span class="clause-ref">12.1</span> This Agreement shall commence on the date first written above and shall continue for five (5) years unless terminated earlier by mutual written agreement.</p>
+    <p><span class="clause-ref">12.2</span> The confidentiality and non-use obligations shall survive expiry or termination for five (5) years from the date of disclosure, or for so long as the Confidential Information remains confidential, whichever is longer.</p>
+
+    <h3>13. Assignment</h3>
+    <p>Neither Party may assign or transfer its rights or obligations under this Agreement without the prior written consent of the other Party.</p>
+
+    <h3>14. Remedies</h3>
+    <p>The Receiving Party acknowledges that damages alone may be an inadequate remedy for breach of this Agreement and that the Disclosing Party shall be entitled to seek injunctive or equitable relief.</p>
+
+    <h3>15. Entire Agreement and Variation</h3>
+    <p>This Agreement constitutes the entire agreement between the Parties in relation to its subject matter. Any variation must be in writing and signed by authorised representatives of both Parties.</p>
+
+    <h3>16. Counterparts</h3>
+    <p>This Agreement may be executed in counterparts. Electronic signatures shall be legally effective.</p>
+
+    <h3>17. Governing Law and Jurisdiction</h3>
+    <p>This Agreement and any dispute or claim (including non-contractual disputes or claims) arising out of or in connection with it shall be governed by and construed in accordance with <span id="preview-law-governing">Scots law</span>. <span id="preview-law-courts">The Scottish courts</span> shall have exclusive jurisdiction.</p>
+
+    <h2>SIGNED</h2>
+    <p><strong>For and on behalf of BioPhotonix</strong></p>
+    <p>Signature: <span id="preview-bp-sig-text" style="display:none; font-family: var(--font-display); font-style: italic; font-weight: 500;">Adail Islam</span><img id="preview-bp-sig-img" src="adail-signature.png" alt="Adail Islam signature" style="max-height: 50px; vertical-align: middle; display: inline-block;" /></p>
+    <p>Name: Adail Islam</p>
+    <p>Title: Director / CEO</p>
+    <p>Date: <span class="field-inline" id="preview-bp-date">[Date]</span></p>
+
+    <p style="margin-top: var(--space-6);"><strong>For and on behalf of the Recipient</strong></p>
+    <p>Signature: <span class="field-inline" id="preview-sig">[Signature]</span></p>
+    <p>Name: <span class="field-inline" id="preview-name">[Name]</span></p>
+    <p id="recipient-title-row">Title: <span class="field-inline" id="preview-title">[Title]</span></p>
+    <p>Date: <span class="field-inline" id="preview-date">[Date]</span></p>
+  </article>
+
+  <!-- Form Section -->
+  <section class="form-section">
+    <h2>Complete Your Details</h2>
+    <p class="form-intro">Fill in the fields below. The agreement above will update as you type. When ready, print or download the completed NDA as a PDF.</p>
+
+    <!-- Recipient type toggle -->
+    <div class="recipient-type-toggle recipient-type-toggle--four">
+      <label class="toggle-option">
+        <input type="radio" name="recipient-type" value="company" checked data-testid="radio-company" />
+        <span class="toggle-label">Company</span>
+      </label>
+      <label class="toggle-option">
+        <input type="radio" name="recipient-type" value="education" data-testid="radio-education" />
+        <span class="toggle-label">Education Institution</span>
+      </label>
+      <label class="toggle-option">
+        <input type="radio" name="recipient-type" value="individual" data-testid="radio-individual" />
+        <span class="toggle-label">Individual</span>
+      </label>
+      <label class="toggle-option">
+        <input type="radio" name="recipient-type" value="other" data-testid="radio-other" />
+        <span class="toggle-label">Other</span>
+      </label>
+    </div>
+
+    <!-- Governing law toggle -->
+    <div class="jurisdiction-block">
+      <label class="jurisdiction-heading">Governing law and jurisdiction</label>
+      <div class="recipient-type-toggle">
+        <label class="toggle-option">
+          <input type="radio" name="jurisdiction" value="scotland" checked data-testid="radio-scotland" />
+          <span class="toggle-label">Scots law</span>
+        </label>
+        <label class="toggle-option">
+          <input type="radio" name="jurisdiction" value="england" data-testid="radio-england" />
+          <span class="toggle-label">Law of England &amp; Wales</span>
+        </label>
+      </div>
+      <p class="jurisdiction-hint">Select the governing law required by your organisation. Clause 17 and related references update automatically. All other terms are unchanged.</p>
+    </div>
+
+    <div class="form-grid">
+      <!-- Company / Education / Other mode fields (shared) -->
+      <div id="company-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company-name" id="label-company-name">Company Name <span class="required">*</span></label>
+            <input type="text" id="company-name" name="company-name" placeholder="e.g. Acme Medical Ltd" data-preview="preview-company" />
+            <span class="error-msg">Name is required</span>
+          </div>
+          <div class="form-group">
+            <label for="incorporation" id="label-incorporation">Place of Incorporation <span class="required">*</span></label>
+            <input type="text" id="incorporation" name="incorporation" placeholder="e.g. Scotland" data-preview="preview-incorporation" />
+            <span class="error-msg">This field is required</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company-number" id="label-company-number">Company Number</label>
+            <input type="text" id="company-number" name="company-number" placeholder="e.g. SC123456" data-preview="preview-company-number" />
+            <span class="hint">Optional</span>
+          </div>
+          <div class="form-group">
+            <label for="registered-address" id="label-registered-address">Registered Office Address <span class="required">*</span></label>
+            <input type="text" id="registered-address" name="registered-address" placeholder="e.g. 123 High Street, Edinburgh, EH1 1AB" data-preview="preview-address" />
+            <span class="error-msg">Address is required</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Individual mode fields -->
+      <div id="individual-fields" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="individual-name">Full Legal Name <span class="required">*</span></label>
+            <input type="text" id="individual-name" name="individual-name" placeholder="e.g. Jane Smith" data-preview="preview-individual-name" />
+            <span class="error-msg">Full name is required</span>
+          </div>
+          <div class="form-group">
+            <label for="individual-address">Residential Address <span class="required">*</span></label>
+            <input type="text" id="individual-address" name="individual-address" placeholder="e.g. 1 Test Street, Edinburgh, EH1 1AB" data-preview="preview-individual-address" />
+            <span class="error-msg">Address is required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="signer-name">Your Name <span class="required">*</span></label>
+          <input type="text" id="signer-name" name="signer-name" placeholder="Full name" data-preview="preview-name" />
+          <span class="error-msg">Name is required</span>
+        </div>
+        <div class="form-group" id="title-group">
+          <label for="signer-title">Your Title / Capacity <span class="required">*</span></label>
+          <input type="text" id="signer-title" name="signer-title" placeholder="e.g. Director, CEO, Consultant" data-preview="preview-title" />
+          <span class="error-msg">Title is required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="signer-date">Date of Signing <span class="required">*</span></label>
+        <input type="date" id="signer-date" name="signer-date" data-preview="preview-date" data-preview-extra="preview-bp-date" />
+        <span class="error-msg">Date is required</span>
+      </div>
+
+      <!-- Signature -->
+      <div class="signature-section">
+        <label>Signature <span class="required">*</span></label>
+        <div class="signature-tabs">
+          <button type="button" class="signature-tab active" data-sig-tab="draw" data-testid="tab-draw">Draw</button>
+          <button type="button" class="signature-tab" data-sig-tab="type" data-testid="tab-type">Type</button>
+        </div>
+
+        <div class="signature-pad-container" id="sig-draw-panel">
+          <canvas id="signature-canvas" data-testid="canvas-signature"></canvas>
+          <span class="sig-placeholder" id="sig-placeholder">Sign here using your mouse or finger</span>
+          <div class="signature-actions">
+            <button type="button" class="btn-clear-sig" id="clear-sig" data-testid="button-clear-sig">Clear signature</button>
+          </div>
+        </div>
+
+        <div class="signature-pad-container" id="sig-type-panel" style="display: none;">
+          <input type="text" class="signature-typed-input" id="signature-typed" placeholder="Type your full name" data-testid="input-typed-sig" />
+          <div class="signature-actions">
+            <button type="button" class="btn-clear-sig" id="clear-typed-sig" data-testid="button-clear-typed-sig">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="download-btn" data-testid="button-download">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Completed NDA
+      </button>
+      <button class="btn-secondary" id="print-btn" data-testid="button-print">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+
+    <div class="success-banner" id="success-banner">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <span id="success-message">NDA downloaded. Please send the completed PDF to Adail Islam at BioPhotonix to proceed.</span>
+    </div>
+
+    <div class="privacy-note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Your details are processed only in your browser to generate the NDA document. Nothing is stored or sent to any server. Once you download the PDF, please return it to Adail Islam at BioPhotonix.</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>BioPhotonix Ltd (SC881225) · Thebeyond, Skypark, 8 Elliot Street, Glasgow, G3 8EP · Scotland</p>
+  </footer>
+</div>
+
+<script src="jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
