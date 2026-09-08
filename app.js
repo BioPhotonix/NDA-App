@@ -343,13 +343,15 @@ function updateTypedPreview() {
 typedSigInput.addEventListener('input', updateTypedPreview);
 
 // === Form Validation ===
+const EMAIL_RE = /^[^\s@,;:<>()[\]\\]+@[^\s@,;:<>()[\]\\]+\.[a-z]{2,}$/i;
+
 function validateForm() {
-  let required = ['signer-name', 'signer-date'];
+  let required = ['signer-name', 'signer-email', 'signer-date'];
   if (recipientType === 'individual') {
-    required = ['individual-name', 'individual-address', 'signer-name', 'signer-date'];
+    required = ['individual-name', 'individual-address', 'signer-name', 'signer-email', 'signer-date'];
   } else {
     // company, education, other all share the same field set
-    required = ['company-name', 'incorporation', 'registered-address', 'signer-name', 'signer-title', 'signer-date'];
+    required = ['company-name', 'incorporation', 'registered-address', 'signer-name', 'signer-title', 'signer-email', 'signer-date'];
   }
   let valid = true;
   required.forEach(id => {
@@ -362,6 +364,14 @@ function validateForm() {
       group.classList.remove('has-error');
     }
   });
+
+  // A typo here means the signer never gets their copy, so check the shape
+  // of the address as well as its presence.
+  const emailInput = document.getElementById('signer-email');
+  if (emailInput.value.trim() && !EMAIL_RE.test(emailInput.value.trim())) {
+    emailInput.closest('.form-group').classList.add('has-error');
+    valid = false;
+  }
 
   // Check signature
   const activeTab = document.querySelector('[data-sig-tab].active').dataset.sigTab;
@@ -389,10 +399,27 @@ document.querySelectorAll('input').forEach(input => {
 // === PDF Generation ===
 const { jsPDF } = window.jspdf;
 
+const CONFIG = Object.assign(
+  { endpoint: '/api/send-nda', contactName: 'Adail Islam', contactEmail: 'info@biophotonix.co.uk' },
+  window.NDA_CONFIG || {}
+);
+
+function focusFirstError() {
+  const firstError = document.querySelector('.has-error');
+  if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.getElementById('submit-btn').addEventListener('click', () => {
+  if (!validateForm()) {
+    focusFirstError();
+    return;
+  }
+  submitNDA();
+});
+
 document.getElementById('download-btn').addEventListener('click', () => {
   if (!validateForm()) {
-    const firstError = document.querySelector('.has-error');
-    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    focusFirstError();
     return;
   }
   generatePDF();
@@ -432,6 +459,7 @@ function buildPDF() {
     fileLabel = companyName;
   }
   const title = recipientType === 'individual' ? 'Individual' : document.getElementById('signer-title').value.trim();
+  const email = document.getElementById('signer-email').value.trim();
 
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -641,10 +669,123 @@ function buildPDF() {
   if (recipientType !== 'individual') {
     addText(`Title: ${title}`);
   }
+  addText(`Email: ${email}`);
   addText(`Date: ${dateStr}`);
 
   const filename = `NDA_${fileLabel.replace(/[^a-zA-Z0-9]/g, '_')}_${dateStr.replace(/\//g, '-')}.pdf`;
-  return { doc, filename, recipientName, name };
+  return { doc, filename, recipientName, name, title, email, dateStr };
+}
+
+// === Submission ===
+// Convert the PDF to base64 for the JSON payload. Chunked because
+// String.fromCharCode(...bytes) blows the argument limit on a whole document.
+function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  let binary = '';
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
+function showBanner(kind, message) {
+  const success = document.getElementById('success-banner');
+  const error = document.getElementById('error-banner');
+  const target = kind === 'error' ? error : success;
+  const other = kind === 'error' ? success : error;
+
+  other.classList.remove('show');
+  document.getElementById(kind === 'error' ? 'error-message' : 'success-message').textContent = message;
+  target.classList.add('show');
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function setSending(sending) {
+  const btn = document.getElementById('submit-btn');
+  btn.classList.toggle('is-sending', sending);
+  btn.disabled = sending;
+  btn.querySelector('.btn-label').textContent = sending
+    ? 'Sending…'
+    : 'Sign & Send to BioPhotonix';
+  // Downloading a half-filled copy mid-send would only confuse things.
+  document.getElementById('download-btn').disabled = sending;
+  document.getElementById('print-btn').disabled = sending;
+}
+
+function collectSubmissionFields() {
+  const fields = {
+    recipientType,
+    jurisdiction,
+    website: document.getElementById('website').value,
+  };
+  if (recipientType === 'individual') {
+    fields.incorporation = document.getElementById('individual-address').value.trim();
+  } else {
+    fields.incorporation = document.getElementById('incorporation').value.trim();
+    fields.registrationNumber = document.getElementById('company-number').value.trim();
+    fields.address = document.getElementById('registered-address').value.trim();
+  }
+  return fields;
+}
+
+async function submitNDA() {
+  const result = buildPDF();
+  if (!result) return;
+  const { doc, filename, recipientName, name, title, email, dateStr } = result;
+
+  setSending(true);
+  document.getElementById('error-banner').classList.remove('show');
+
+  const payload = Object.assign(collectSubmissionFields(), {
+    recipientName,
+    signerName: name,
+    signerTitle: title,
+    signerEmail: email,
+    signedDate: dateStr,
+    filename,
+    pdfBase64: arrayBufferToBase64(doc.output('arraybuffer')),
+  });
+
+  try {
+    const response = await fetch(CONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      // A non-JSON response means the endpoint is missing or misconfigured;
+      // the status check below reports it.
+    }
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || `The server responded with ${response.status}.`);
+    }
+
+    const copyNote = data.signerCopySent
+      ? ` A copy has also been sent to ${email}.`
+      : ' Please keep your own copy using the download button below.';
+    showBanner(
+      'success',
+      `Thank you — your signed NDA has been sent to BioPhotonix.${copyNote}`
+    );
+    setSending(false);
+    // Nothing left to submit; a second click would only send a duplicate.
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('submit-btn').querySelector('.btn-label').textContent = 'Sent';
+  } catch (err) {
+    console.error('Could not send the NDA:', err);
+    setSending(false);
+    showBanner(
+      'error',
+      `${err.message} Your NDA was not sent. Please try again, or use "Download a Copy" ` +
+      `below and email it to ${CONFIG.contactName} at ${CONFIG.contactEmail}.`
+    );
+  }
 }
 
 function generatePDF() {
@@ -653,12 +794,11 @@ function generatePDF() {
   const { doc, filename } = result;
   doc.save(filename);
 
-  // Show success
-  const banner = document.getElementById('success-banner');
-  const successMsg = document.getElementById('success-message');
-  banner.classList.add('show');
-  successMsg.textContent = 'NDA downloaded. Please send the completed PDF to Adail Islam at BioPhotonix to proceed.';
-  banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showBanner(
+    'success',
+    'NDA downloaded. If you have not already submitted it above, please email the PDF to ' +
+    `${CONFIG.contactName} at ${CONFIG.contactEmail}.`
+  );
 }
 
 // Build the PDF and open it in a new tab for printing
@@ -671,19 +811,13 @@ function openPDFForPrint() {
   const url = URL.createObjectURL(blob);
   const newTab = window.open(url, '_blank');
 
-  // Show success
-  const banner = document.getElementById('success-banner');
-  const successMsg = document.getElementById('success-message');
-  banner.classList.add('show');
-
   if (newTab) {
-    successMsg.textContent = 'NDA opened in a new tab. Use your browser print or save option from there.';
+    showBanner('success', 'NDA opened in a new tab. Use your browser print or save option from there.');
   } else {
     // Pop-up was blocked — download the PDF instead so the user can open/print it manually
     doc.save(filename);
-    successMsg.textContent = 'Your browser blocked opening a new tab. The NDA has been downloaded instead — open it to print or save.';
+    showBanner('success', 'Your browser blocked opening a new tab. The NDA has been downloaded instead — open it to print or save.');
   }
-  banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // Trim signature canvas to content

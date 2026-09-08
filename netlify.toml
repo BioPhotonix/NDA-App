@@ -1,0 +1,29 @@
+[build]
+  # Nothing to build — the app is a static folder plus one function.
+  publish = "."
+  functions = "netlify/functions"
+
+# Keep the same public URL as the Vercel deployment so the front end can call
+# /api/send-nda on either host without a code change.
+[[redirects]]
+  from = "/api/send-nda"
+  to = "/.netlify/functions/send-nda"
+  status = 200
+
+# The function and its shared library must not be served as static assets.
+[[redirects]]
+  from = "/api/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"

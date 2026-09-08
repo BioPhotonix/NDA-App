@@ -1,14 +1,16 @@
 {
   "name": "nda-app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "2.0.0",
+  "description": "BioPhotonix Ltd online mutual NDA \u2014 sign in the browser, emailed straight to BioPhotonix.",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
   "dependencies": {
     "jspdf": "^4.2.1"
   }

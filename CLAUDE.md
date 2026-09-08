@@ -1,10 +1,15 @@
 # BioPhotonix NDA — Project Handoff
 
-A self-contained static web app that lets BioPhotonix Ltd's counterparties
-(universities, NHS trusts, companies, individuals) fill in and sign a mutual
-Non-Disclosure Agreement online, then download or print it as a PDF.
+A web app that lets BioPhotonix Ltd's counterparties (universities, NHS trusts,
+companies, individuals) fill in and sign a mutual Non-Disclosure Agreement
+online. On submit, the completed PDF is emailed straight to BioPhotonix, with a
+copy to the signer. Downloading and printing remain available as a fallback.
 
-Live site (Perplexity Computer hosted): https://biophotonix-nda.pplx.app
+The front end is still pure client-side HTML/CSS/JS. The only server-side part
+is one serverless function that sends the email, so the Resend API key is never
+exposed to the browser.
+
+See `README.md` for deployment and Resend setup.
 
 ---
 
@@ -14,47 +19,68 @@ Live site (Perplexity Computer hosted): https://biophotonix-nda.pplx.app
 - Lets the recipient pick a **recipient type** (Company / Education Institution / Individual / Other) — form labels and the PARTIES clause wording adapt automatically.
 - Lets the recipient pick a **governing law** (Scots law / Law of England & Wales) — Clause 17 and related references update automatically.
 - Bakes in BioPhotonix director Adail Islam's handwritten signature image on both the on-screen preview and the generated PDF.
-- Generates a dated, filled PDF via jsPDF (download or print).
-- Validates required fields before generating the PDF.
+- Generates a dated, filled PDF via jsPDF.
+- **Emails the signed PDF to BioPhotonix on submit**, and sends the signer their
+  own copy. Download and print remain as a fallback if sending fails.
+- Validates required fields before generating the PDF, then validates again
+  server-side because anyone can POST to the endpoint directly.
 
-No backend, no server, no database. Pure client-side HTML/CSS/JS. Just open
-`index.html` in a browser, or serve the folder from any static host.
+No database and no stored state — a submission is validated, emailed, and
+forgotten. The only server-side code is `api/_lib/send-nda.js` plus its two
+thin host adapters.
 
 ---
 
 ## 2. File structure
 
 ```
-nda-app/
-├── index.html              # Page markup, inline CSS, NDA clause text, form, toggle UI
-├── app.js                  # All logic: live preview, toggles, validation, PDF generation
-├── jspdf.umd.min.js        # Vendored jsPDF UMD build (loaded via <script>, NOT npm)
-├── adail-signature.png     # Adail Islam's handwritten signature (embedded into PDF + preview)
-├── biophotonix-logo.jpg    # BioPhotonix company logo (teal aperture mark)
-├── package.json            # Lists jspdf dep — but the vendored UMD build is already included,
-│                            # so `npm install` is NOT required to run the app
-├── package-lock.json
-└── CLAUDE.md               # This file
+.
+├── index.html                     # Page markup, inline CSS, NDA clause text, form, toggle UI
+├── app.js                         # Live preview, toggles, validation, PDF generation, submit
+├── config.js                      # PUBLIC front-end config: API endpoint, contact details.
+│                                  #   Never put a secret here — it is served to every visitor.
+├── jspdf.umd.min.js               # Vendored jsPDF UMD build (loaded via <script>, NOT npm)
+├── adail-signature.png            # Adail Islam's handwritten signature (embedded into PDF + preview)
+├── biophotonix-logo.jpg           # BioPhotonix company logo (teal aperture mark)
+├── server.js                      # Local dev server: static files + the function in one process.
+│                                  #   Development only — the hosts do not use it.
+├── api/
+│   ├── send-nda.js                # Vercel serverless function (POST /api/send-nda)
+│   └── _lib/send-nda.js           # All the real logic: validation, email body, Resend call.
+│                                  #   Shared by both host adapters. The `_` prefix keeps
+│                                  #   Vercel from exposing it as a route.
+├── netlify/functions/send-nda.mjs # Netlify adapter for the same shared logic
+├── test/                          # node:test suites for the server-side logic
+├── vercel.json                    # Vercel function + security headers config
+├── netlify.toml                   # Netlify publish dir, functions dir, /api redirect
+├── .env.example                   # Template for the server-side environment variables
+├── package.json                   # ESM ("type": "module"); jspdf is listed but vendored,
+│                                  #   so `npm install` is NOT required to run the app
+├── README.md                      # Deployment, Resend setup, troubleshooting
+└── CLAUDE.md                      # This file
 ```
 
 ---
 
 ## 3. How to run locally
 
-The simplest way — no build step:
+No build step, and still no `npm install` — jsPDF is vendored and the function
+uses only Node built-ins.
 
 ```bash
-# Option A: just open the file
-open index.html            # macOS
-xdg-open index.html        # Linux
-
-# Option B: serve locally (needed if file:// causes CORS issues with the signature image)
-python3 -m http.server 8000
+# Full flow, including sending real email (needs a .env — see .env.example)
+node --env-file=.env server.js
 # then visit http://localhost:8000
+
+# Front end only: any static server works, but /api/send-nda will 404,
+# so submitting will fail. Download and print still work.
+python3 -m http.server 8000
 ```
 
-There is no bundler, no framework, no TypeScript, no npm install step required.
-All libraries are vendored. It is a single static folder.
+Do not open `index.html` over `file://` — the signature image fetch is blocked
+by CORS, and there is no endpoint to submit to.
+
+Run the server-side tests with `npm test` (uses `node:test`; no dependencies).
 
 ---
 
@@ -76,12 +102,30 @@ These were learned the hard way — respect them or things break silently:
 4. **Sandboxed preview blocks** (only matters when hosting in Perplexity's
    `/computer/a` preview iframe, not a normal static host): `localStorage`,
    `sessionStorage`, `indexedDB`, and `window.open()` with blob URLs are silently
-   blocked. The app already avoids all of these.
+   blocked. The app already avoids all of these. Note that Perplexity Computer
+   is static-only, so it cannot run the email function — see section 8.
 
 5. **Signature image**: `adail-signature.png` is fetched at load time and
    converted to a data URL so it can be embedded into the jsPDF output.
    If the file is missing or fails to load, the signature silently does not
    appear in the PDF.
+
+6. **Never put a secret in `config.js`, `app.js` or `index.html`.** They are
+   served to every visitor. The Resend API key belongs in a server-side
+   environment variable, read only by `api/_lib/send-nda.js`.
+
+7. **The two host adapters must stay thin.** `api/send-nda.js` and
+   `netlify/functions/send-nda.mjs` only translate the host's request and
+   response shapes. Any behaviour change goes in `api/_lib/send-nda.js` so both
+   hosts stay in step, and so the tests still cover it.
+
+8. **Validate on the server, not just in the browser.** `validateForm()` in
+   `app.js` is a convenience for the signer; anyone can POST to the endpoint
+   directly, so `parseSubmission()` re-checks everything independently.
+
+9. **A failed signer copy must not fail the request.** The NDA has already
+   reached BioPhotonix by that point, and failing would make the signer submit
+   again and create duplicates.
 
 ---
 
@@ -96,8 +140,12 @@ These were learned the hard way — respect them or things break silently:
 - Form: recipient-type toggle (4-way radio), jurisdiction toggle (2-way radio),
   shared field block for Company/Education/Other, separate field block for Individual,
   signer name/title/date, signature pad (draw or type).
-- Actions: only two buttons — `#download-btn` and `#print-btn`. (The "Email"
-   / mailto button was removed by request — do not re-add it.)
+- Actions: three buttons — `#submit-btn` (primary: sends the NDA by email),
+  `#download-btn` and `#print-btn` (both fallbacks). A `#website` honeypot input
+  sits hidden above them; it must stay empty for a submission to be emailed.
+  (The old "Email" / *mailto* button is gone and must not come back — real
+  sending now goes through the endpoint, not the user's mail client.)
+- Banners: `#success-banner` and `#error-banner`, driven by `showBanner()`.
 
 ### app.js (single IIFE, runs on DOMContentLoaded)
 - **Theme toggle** (dark/light).
@@ -116,6 +164,24 @@ These were learned the hard way — respect them or things break silently:
   PARTIES clause and title line. Returns `{ doc, filename, recipientName, name }`.
 - **`generatePDF()`**: calls `buildPDF()`, saves the file, shows success banner.
 - **`openPDFForPrint()`**: builds the PDF, opens in a new tab for printing.
+- **`submitNDA()`**: the primary action. Builds the PDF, base64-encodes it via
+  `arrayBufferToBase64()` (chunked — `String.fromCharCode(...bytes)` overflows
+  the argument limit on a whole document), POSTs it as JSON to
+  `CONFIG.endpoint`, and shows a success or error banner. On success the submit
+  button is disabled so a second click cannot send a duplicate.
+- **`CONFIG`**: `window.NDA_CONFIG` from `config.js`, with defaults merged in.
+
+### api/_lib/send-nda.js (the server-side half)
+- **`readConfig(env)`**: reads and validates the environment variables, throwing
+  a `RequestError(500)` naming any that are missing.
+- **`parseSubmission(body)`**: independent server-side validation — required
+  fields, allowed recipient type and jurisdiction, email shape, CR/LF stripping,
+  base64 and `%PDF-` header checks, filename sanitising, honeypot.
+- **`handleSubmission(body, env, origin)`**: the whole flow. Sends the internal
+  notification, then the signer's copy, and returns `{ status, body }`.
+- **`toErrorResponse(error)`**: maps a thrown error to a safe status and message.
+  Unexpected errors and provider responses are logged but never returned to the
+  browser, since they can leak API key state.
 
 ---
 
@@ -127,6 +193,10 @@ The agreement is a **mutual** NDA between (1) BioPhotonix Ltd and (2) the Recipi
 BioPhotonix Ltd, a company incorporated in Scotland (company number SC881225),
 registered office Thebeyond, Skypark, 8 Elliot Street, Glasgow, G3 8EP.
 Director/CEO Adail Islam.
+
+The Recipient's signature block carries Name / Title / **Email** / Date. The
+email line was added when submission by email replaced manual return, so the
+signed document itself records the address the copy was sent to.
 
 **Key clauses** (clause numbers and headings as in the document):
 1. Definitions — Confidential Information, exclusions.
@@ -175,14 +245,25 @@ labels swapped at runtime; individual has its own block (`#individual-fields`).
 
 ---
 
-## 8. Deployment (Perplexity Computer — for reference only)
+## 8. Deployment
 
-If you are moving this off Perplexity Computer to a normal static host
-(Vercel, Netlify, GitHub Pages, S3, etc.), you can ignore this section —
-just deploy the folder as a static site. The app has no Perplexity-specific
-runtime dependencies.
+Full instructions, including Resend domain verification, are in `README.md`.
+The short version:
 
-Previous Perplexity deployment details (for history):
+- The app needs a host that serves static files **and** runs a serverless
+  function. Vercel and Netlify both do, and both are configured here already
+  (`vercel.json`, `netlify.toml`). Import the repo, set the environment
+  variables, deploy.
+- **A static-only host is no longer enough.** GitHub Pages, S3 and Perplexity
+  Computer can serve the page, but `/api/send-nda` will 404 and submitting will
+  fail. If the page must live on a static host, deploy the function separately,
+  put its full URL in `config.js`, and set `NDA_ALLOWED_ORIGINS` on the server
+  to the page's origin.
+- Environment variables are read at deploy time — **redeploy after changing
+  them**, or the function keeps the old values.
+
+Previous Perplexity deployment details (for history — static only, so it
+predates the email feature):
 - Live URL: https://biophotonix-nda.pplx.app
 - Deployed via `pplx-tool deploy_website` / `publish_website`.
 - site_id: bc4aa17e-37f0-485f-8faf-e34172d314a4
@@ -201,3 +282,19 @@ Previous Perplexity deployment details (for history):
   NOT been added — it was raised as an option but not requested.
 - The signature image (`adail-signature.png`) is a 260×90 transparent PNG. If
   Adail's signature changes, replace this one file — no code change needed.
+- **No copy of a submitted NDA is kept anywhere.** The email is the only record,
+  so the BioPhotonix inbox is the system of record. If an audit trail is ever
+  needed, the function is the place to add one (e.g. also writing the PDF to
+  object storage) — that would change the privacy note in `index.html`, which
+  currently promises nothing is stored.
+- **The endpoint has no rate limiting beyond the honeypot.** For the expected
+  volume that is fine, but if it is ever abused, add your host's rate limiting
+  (Vercel Firewall / Netlify rate limits) rather than building it in the
+  function — serverless instances do not share memory.
+- **The signer's email address is not verified.** Someone could sign using an
+  address that is not theirs; the copy would go to that address. Verifying it
+  would mean a confirmation step before the NDA is sent, which was judged not
+  worth the friction. Worth revisiting if it ever matters legally.
+- The email is sent via Resend. Swapping providers means changing only
+  `sendViaResend()` in `api/_lib/send-nda.js` — everything else is
+  provider-agnostic.
