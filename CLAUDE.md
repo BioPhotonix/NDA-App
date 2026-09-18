@@ -270,10 +270,14 @@ The short version:
   `biophotonix-nda.netlify.app` address still works and redirects to it).
   Deploys automatically from this branch on push.
 - Email: Resend, sending as `nda@biophotonix.co.uk`.
-- **DNS for biophotonix.co.uk is served by Wix**, not by IONOS where the domain
-  is registered. Records added in the IONOS panel do nothing — IONOS shows them
-  regardless. The Resend verification records live in Wix's DNS editor. See
-  `README.md` → *DNS gotchas*; this cost an hour to spot the first time.
+- **DNS for biophotonix.co.uk is served by IONOS** (its nameservers are the
+  `ui-dns.*` ones — that's IONOS's own infrastructure), which is also where the
+  domain is registered. The site briefly ran on Wix at one point, and this file
+  said DNS was served there — that stopped being true and cost a lost `nda`
+  CNAME record before it was caught (Sep 2026). Confirm the current DNS
+  provider by checking the domain's `NS` records (or asking IONOS/Resend
+  directly) rather than trusting this note if it's ever in doubt again. See
+  `README.md` → *DNS gotchas*.
 
 Previous Perplexity deployment details (for history — static only, so it
 predates the email feature):

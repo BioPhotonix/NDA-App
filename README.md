@@ -43,9 +43,13 @@ Check the domain's `NS` records first (dnschecker.org, or the registrar's
 nameserver settings). Resend's own domain page also names the provider it
 detects, and is worth believing.
 
-*As deployed for BioPhotonix:* the domain is registered with IONOS, the website
-runs on Wix, and **Wix serves the DNS** — so the Resend records live in Wix's
-DNS editor, not in IONOS.
+*As deployed for BioPhotonix:* the domain is registered with **IONOS**, and
+IONOS also serves the DNS (its nameservers are the `ui-dns.*` ones) — so the
+Resend and Netlify records live in the IONOS DNS panel. The site briefly ran on
+Wix at one point, with DNS served there instead; if this domain ever moves
+host again, re-check the `NS` records rather than assuming this note is still
+current — it went stale once already and cost a lost CNAME record before
+anyone noticed (Sep 2026).
 
 **2. Providers disagree about how to write the record name.** For a record whose
 real name is `resend._domainkey.biophotonix.co.uk`:
